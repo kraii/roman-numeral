@@ -3,6 +3,9 @@ package romannumeral;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 public class RomanNumeralConverter {
 	
 	private Map<Character, Integer> characterValues;
@@ -26,18 +29,17 @@ public class RomanNumeralConverter {
 		int total = 0;
 		int previousTokenValue = 0;
 		
-		for(int i = romanNumeral.length() - 1; i >= 0; i--) { 
-			int currentTokenValue = getValueAtPostion(romanNumeral, i);
+		for(Character character : getCharactersReversed(romanNumeral)) { 
+			int currentTokenValue = convertCharacterToInteger(character);
 			total += negateIfSubtractive(currentTokenValue, previousTokenValue);
 			previousTokenValue = currentTokenValue;
 		}
 		
 		return total;
 	}
-	
-	private int getValueAtPostion(String romanNumeral, int position) {
-		Character character = romanNumeral.charAt(position);
-		return convertCharacterToInteger(character);
+
+	private ImmutableList<Character> getCharactersReversed(String romanNumeral) {
+		return Lists.charactersOf(romanNumeral).reverse();
 	}
 
 	private int convertCharacterToInteger(Character romanNumeralCharacter) {
