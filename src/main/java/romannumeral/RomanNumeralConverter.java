@@ -1,36 +1,52 @@
 package romannumeral;
 
-public class RomanNumeralConverter {
+import java.util.HashMap;
+import java.util.Map;
 
-	public static int convert(String romanNumeral) {
+public class RomanNumeralConverter {
+	
+	private Map<Character, Integer> characterValues;
+	
+	public RomanNumeralConverter() {
+		initialiseCharacterValues();
+	}
+	
+	private void initialiseCharacterValues() {
+		characterValues = new HashMap<Character, Integer>();
+		characterValues.put('I', 1);
+		characterValues.put('V', 5);
+		characterValues.put('X', 10);
+		characterValues.put('L', 50);
+		characterValues.put('C', 100);
+		characterValues.put('D', 500);
+		characterValues.put('M', 1000);
+	}
+	
+	public int convert(String romanNumeral) {
 		int total = 0;
-		for(int i = 0; i < romanNumeral.length(); i++) { 
-			String character = String.valueOf(romanNumeral.charAt(i));
-			total += convertCharacter(character);
+		int previousValue = 0;
+		for(int i = romanNumeral.length() - 1; i >= 0; i--) { 
+			Character character = romanNumeral.charAt(i);
+			int currentValue = convertCharacter(character);
+
+			if(currentValue < previousValue) 
+				total -= currentValue; 
+			else 
+				total += currentValue;
+			
+			previousValue = currentValue;
 		}
 		
 		return total;
 	}
 
-	private static int convertCharacter(String romanNumeral) {
-		switch (romanNumeral) {
-		case "I":
-			return 1;
-		case "V":
-			return 5;
-		case "X":
-			return 10;
-		case "L":
-			return 50;
-		case "C":
-			return 100;
-		case "D":
-			return 500;
-		case "M":
-			return 1000;
-		}
-
-		throw new InvalidNumeralException();
+	private int convertCharacter(Character romanNumeralCharacter) {
+		Integer value = characterValues.get(romanNumeralCharacter);
+		
+		if(value == null) 
+			throw new InvalidNumeralException();
+		else 
+			return value;
 	}
 }
 
