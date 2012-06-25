@@ -1,9 +1,7 @@
 package romannumeral;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 public class RomanNumeralConverter {
@@ -38,7 +36,7 @@ public class RomanNumeralConverter {
 		return total;
 	}
 
-	private ImmutableList<Character> getCharactersReversed(String romanNumeral) {
+	private List<Character> getCharactersReversed(String romanNumeral) {
 		return Lists.charactersOf(romanNumeral).reverse();
 	}
 
