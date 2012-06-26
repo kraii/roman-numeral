@@ -2,6 +2,7 @@ package romannumeral;
 
 import java.util.*;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 public class RomanNumeralConverter {
@@ -24,12 +25,14 @@ public class RomanNumeralConverter {
 	}
 	
 	public int convertToInteger(String romanNumeral) {
+		validateNumeral(romanNumeral);
 		int total = 0;
 		int previousTokenValue = 0;
 		
 		for(Character character : getCharactersReversed(romanNumeral)) { 
 			int currentTokenValue = convertCharacterToInteger(character);
 			total += negateIfSubtractive(currentTokenValue, previousTokenValue);
+			
 			previousTokenValue = currentTokenValue;
 		}
 		
@@ -37,7 +40,8 @@ public class RomanNumeralConverter {
 	}
 
 	private List<Character> getCharactersReversed(String romanNumeral) {
-		return Lists.charactersOf(romanNumeral).reverse();
+		ImmutableList<Character> characters = Lists.charactersOf(romanNumeral);
+		return characters.reverse();
 	}
 
 	private int convertCharacterToInteger(Character romanNumeralCharacter) {
@@ -55,9 +59,32 @@ public class RomanNumeralConverter {
 		else
 			return currentTokenValue;
 	}
+	
+	private void validateNumeral(String romanNumeral) {
+		validateCountOfRepeatedI(romanNumeral);
+		validateDIsNotRepeated(romanNumeral);
+	}
+
+	private void validateCountOfRepeatedI(String romanNumeral) {
+		if(romanNumeral.contains("IIII")) {
+			throw new InvalidNumeralException("I Repeated too many times");
+		}
+	}
+	
+	private void validateDIsNotRepeated(String romanNumeral) {
+		if(romanNumeral.contains("DD")) {
+			throw new InvalidNumeralException("Should not use DD, should be C");
+		}
+	}
 }
 
 @SuppressWarnings("serial")
 class InvalidNumeralException extends RuntimeException {
-
+	public InvalidNumeralException() {
+		super();
+	}
+	
+	public InvalidNumeralException(String message) {
+		super(message);
+	}
 }

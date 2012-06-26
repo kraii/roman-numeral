@@ -64,6 +64,11 @@ public class RomanNumeralConverterTest {
 		assertThat(romanNumeralConverter.convertToInteger("MCMXCV"), is(1995));
 	}
 	
+	@Test
+	public void XXXIX_give_39() {
+		assertThat(romanNumeralConverter.convertToInteger("XXXIX"), is(39));
+	}
+	
 	@Test(expected=InvalidNumeralException.class)
 	public void invalidNumeral_gives_exception() {
 		romanNumeralConverter.convertToInteger("Z");
@@ -73,4 +78,20 @@ public class RomanNumeralConverterTest {
 	public void invalidNumeral_gives_exception_when_there_is_valid_numerals() {
 		romanNumeralConverter.convertToInteger("MCMXCVA");
 	}
+	
+	@Test(expected=InvalidNumeralException.class) 
+	public void IIII_is_invalid() {
+		romanNumeralConverter.convertToInteger("IIII");
+	}
+	
+	@Test(expected=InvalidNumeralException.class) 
+	public void IIIII_is_invalid() {
+		romanNumeralConverter.convertToInteger("IIIII");
+	}
+	
+	@Test(expected=InvalidNumeralException.class) 
+	public void DD_is_invalid() {
+		romanNumeralConverter.convertToInteger("DD");
+	}
+	
 }
