@@ -60,6 +60,11 @@ public class RomanNumeralConverterTest {
 	}
 	
 	@Test
+	public void IX_gives_9() {
+		assertThat(romanNumeralConverter.convertToInteger("IX"), is(9));
+	}
+	
+	@Test
 	public void MCMXCV_gives_1995() {
 		assertThat(romanNumeralConverter.convertToInteger("MCMXCV"), is(1995));
 	}
@@ -94,4 +99,18 @@ public class RomanNumeralConverterTest {
 		romanNumeralConverter.convertToInteger("DD");
 	}
 	
+	@Test(expected=InvalidNumeralException.class)
+	public void IM_is_invalid() {
+		romanNumeralConverter.convertToInteger("IM");
+	}
+	
+	@Test(expected=InvalidNumeralException.class)
+	public void IC_is_invalid() {
+		romanNumeralConverter.convertToInteger("IC");
+	}
+	
+	@Test(expected=InvalidNumeralException.class)
+	public void LM_is_invalid() {
+		romanNumeralConverter.convertToInteger("LM");
+	}
 }
