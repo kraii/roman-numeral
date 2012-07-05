@@ -7,23 +7,6 @@ import com.google.common.collect.Lists;
 
 public class RomanNumeralConverter {
 
-	private Map<Character, Integer> characterValues;
-
-	public RomanNumeralConverter() {
-		initialiseCharacterValues();
-	}
-
-	private void initialiseCharacterValues() {
-		characterValues = new HashMap<Character, Integer>();
-		characterValues.put('I', 1);
-		characterValues.put('V', 5);
-		characterValues.put('X', 10);
-		characterValues.put('L', 50);
-		characterValues.put('C', 100);
-		characterValues.put('D', 500);
-		characterValues.put('M', 1000);
-	}
-
 	public int convertToInteger(String romanNumeral) {
 		validateNumeral(romanNumeral);
 		int total = 0;
