@@ -27,13 +27,13 @@ public class RomanNumeralConverter {
 	public int convertToInteger(String romanNumeral) {
 		validateNumeral(romanNumeral);
 		int total = 0;
-		int previousTokenValue = 0;
+		Numeral previousToken = Numeral.NULL;
 
 		for (Character character : getCharactersReversed(romanNumeral)) {
-			int currentTokenValue = convertCharacterToInteger(character);
-			total += negateIfSubtractive(currentTokenValue, previousTokenValue);
+			Numeral currentToken = Numeral.parse(character);
+			total += negateIfSubtractive(currentToken, previousToken);
 
-			previousTokenValue = currentTokenValue;
+			previousToken = currentToken;
 		}
 
 		return total;
@@ -44,28 +44,18 @@ public class RomanNumeralConverter {
 		return characters.reverse();
 	}
 
-	private int convertCharacterToInteger(Character romanNumeralCharacter) {
-		Integer value = characterValues.get(romanNumeralCharacter);
-
-		if (value == null)
-			throw new InvalidNumeralException();
-		else
-			return value;
-	}
-
-	private int negateIfSubtractive(int currentTokenValue, int previousTokenValue) {
-		if (currentTokenValue < previousTokenValue) {
-			validateValuesOnlyOneOrderOfMaginitudeDifferent(currentTokenValue, previousTokenValue);
-			return currentTokenValue * -1;
+	private int negateIfSubtractive(Numeral currentToken, Numeral previousToken) {
+		if (currentToken.smallerThan(previousToken)) {
+			validateSubtractiveCombination(currentToken, previousToken);
+			return currentToken.decimalValue * -1;
 		} else
-			return currentTokenValue;
+			return currentToken.decimalValue;
 	}
 
-	private void validateValuesOnlyOneOrderOfMaginitudeDifferent(int currentTokenValue, int previousTokenValue) {
-		int i = previousTokenValue / currentTokenValue;
-		if (i > 10) {
-			throw new InvalidNumeralException("Cannot apply subtractive principle to tokens with values %d %d",
-					previousTokenValue, currentTokenValue);
+	private void validateSubtractiveCombination(Numeral currentToken, Numeral previousToken) {
+		if (!currentToken.canBeSubtractedFrom(previousToken)) {
+			throw new InvalidNumeralException("Cannot apply subtractive principle to tokens %s%s",
+					previousToken, currentToken);
 		}
 	}
 
@@ -85,17 +75,4 @@ public class RomanNumeralConverter {
 	}
 }
 
-@SuppressWarnings("serial")
-class InvalidNumeralException extends RuntimeException {
-	public InvalidNumeralException() {
-		super();
-	}
 
-	public InvalidNumeralException(String message) {
-		super(message);
-	}
-
-	public InvalidNumeralException(String formatString, Object... args) {
-		super(String.format(formatString, args));
-	}
-}
