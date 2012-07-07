@@ -30,6 +30,7 @@ public class RomanNumeralConverter {
 
 	private void validateIfTokenRepeated(Numeral previousToken, Numeral currentToken) {
 		if (previousToken == currentToken) {
+			timeTokenRepeated++;
 			validateRepeatedToken(currentToken);
 		} else {
 			timeTokenRepeated = 1;
@@ -37,13 +38,19 @@ public class RomanNumeralConverter {
 	}
 
 	private void validateRepeatedToken(Numeral currentToken) {
-		timeTokenRepeated++;
 		Numeral immediateHigherValueNumeral = currentToken.getImmediateHigherValueNumeral();
+		validateNoTokenWithSameValueAsRepeatedTokens(currentToken, immediateHigherValueNumeral);
+		validateNoAvailableSubtractiveOption(currentToken, immediateHigherValueNumeral);
+	}
+
+	private void validateNoTokenWithSameValueAsRepeatedTokens(Numeral currentToken, Numeral immediateHigherValueNumeral) {
 		if (immediateHigherValueNumeral.decimalValue == currentToken.decimalValue * timeTokenRepeated) {
 			throw new InvalidNumeralException("Should not repeat %s, instead use %s", currentToken,
 					immediateHigherValueNumeral);
 		}
+	}
 
+	private void validateNoAvailableSubtractiveOption(Numeral currentToken, Numeral immediateHigherValueNumeral) {
 		if(timeTokenRepeated >= 4 &&  currentToken.canBeSubtractedFrom(immediateHigherValueNumeral)) {
 			throw new InvalidNumeralException("Should not repeat %s, instead use %s%s", currentToken, currentToken,
 					immediateHigherValueNumeral);
