@@ -7,13 +7,14 @@ import com.google.common.collect.Lists;
 
 public class RomanNumeralConverter {
 
-	public int convertToInteger(String romanNumeral) {
-		validateNumeral(romanNumeral);
-		int total = 0;
-		Numeral previousToken = Numeral.NULL;
+	Numeral previousToken = Numeral.NULL;
+	int timeTokenRepeated = 1;
 
+	public int convertToInteger(String romanNumeral) {
+		int total = 0;
 		for (Character character : getCharactersReversed(romanNumeral)) {
 			Numeral currentToken = Numeral.parse(character);
+			validateIfTokenRepeated(previousToken, currentToken);
 			total += negateIfSubtractive(currentToken, previousToken);
 
 			previousToken = currentToken;
@@ -27,6 +28,28 @@ public class RomanNumeralConverter {
 		return characters.reverse();
 	}
 
+	private void validateIfTokenRepeated(Numeral previousToken, Numeral currentToken) {
+		if (previousToken == currentToken) {
+			validateRepeatedToken(currentToken);
+		} else {
+			timeTokenRepeated = 1;
+		}
+	}
+
+	private void validateRepeatedToken(Numeral currentToken) {
+		timeTokenRepeated++;
+		Numeral immediateHigherValueNumeral = currentToken.getImmediateHigherValueNumeral();
+		if (immediateHigherValueNumeral.decimalValue == currentToken.decimalValue * timeTokenRepeated) {
+			throw new InvalidNumeralException("Should not repeat %s, instead use %s", currentToken,
+					immediateHigherValueNumeral);
+		}
+
+		if(timeTokenRepeated >= 4 &&  currentToken.canBeSubtractedFrom(immediateHigherValueNumeral)) {
+			throw new InvalidNumeralException("Should not repeat %s, instead use %s%s", currentToken, currentToken,
+					immediateHigherValueNumeral);
+		}
+	}
+
 	private int negateIfSubtractive(Numeral currentToken, Numeral previousToken) {
 		if (currentToken.smallerThan(previousToken)) {
 			validateSubtractiveCombination(currentToken, previousToken);
@@ -37,25 +60,8 @@ public class RomanNumeralConverter {
 
 	private void validateSubtractiveCombination(Numeral currentToken, Numeral previousToken) {
 		if (!currentToken.canBeSubtractedFrom(previousToken)) {
-			throw new InvalidNumeralException("Cannot apply subtractive principle to tokens %s%s",
-					previousToken, currentToken);
+			throw new InvalidNumeralException("Cannot apply subtractive principle to tokens %s%s", previousToken,
+					currentToken);
 		}
 	}
-
-	private void validateNumeral(String romanNumeral) {
-		validateCountOfRepeatedI(romanNumeral);
-		validateDIsNotRepeated(romanNumeral);
-	}
-
-	private void validateCountOfRepeatedI(String romanNumeral) {
-		if (romanNumeral.contains("IIII"))
-			throw new InvalidNumeralException("I Repeated too many times");
-	}
-
-	private void validateDIsNotRepeated(String romanNumeral) {
-		if (romanNumeral.contains("DD"))
-			throw new InvalidNumeralException("Should not use DD, should be C");
-	}
 }
-
-

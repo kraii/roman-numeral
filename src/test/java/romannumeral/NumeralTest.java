@@ -78,11 +78,48 @@ public class NumeralTest {
 		assertThat(L.canBeSubtractedFrom(M), is(false));
 	}
 
+	@Test
 	public void I_CannotBeSubtractedFromM() {
 		assertThat(I.canBeSubtractedFrom(M), is(false));
 	}
 
+	@Test
 	public void I_CannotBeSubtractedFromC() {
 		assertThat(I.canBeSubtractedFrom(C), is(false));
+	}
+	
+	@Test
+	public void getNextHigherValueNumeralForIReturnsV() { 
+		assertThat(I.getImmediateHigherValueNumeral(), is(V));
+	}
+	
+	@Test
+	public void getNextHigherValueNumeralForVReturnsX() { 
+		assertThat(V.getImmediateHigherValueNumeral(), is(X));
+	}
+	
+	@Test
+	public void getNextHigherValueNumeralForXReturnsL() { 
+		assertThat(X.getImmediateHigherValueNumeral(), is(L));
+	}
+	
+	@Test
+	public void getNextHigherValueNumeralForLReturnsC() { 
+		assertThat(L.getImmediateHigherValueNumeral(), is(C));
+	}
+	
+	@Test
+	public void getNextHigherValueNumeralForCReturnsD() { 
+		assertThat(C.getImmediateHigherValueNumeral(), is(D));
+	}
+	
+	@Test
+	public void getNextHigherValueNumeralForDReturnsM() { 
+		assertThat(D.getImmediateHigherValueNumeral(), is(M));
+	}
+	
+	@Test
+	public void getNextHigherValueNumeralForDReturnsNULL() { 
+		assertThat(M.getImmediateHigherValueNumeral(), is(NULL));
 	}
 }

@@ -53,6 +53,11 @@ public class RomanNumeralConverterTest {
 	public void M_gives_1000() {
 		assertThat(romanNumeralConverter.convertToInteger("M"), is(1000));
 	}
+	
+	@Test
+	public void MMM_gives_3000() {
+		assertThat(romanNumeralConverter.convertToInteger("MMM"), is(3000));
+	}
 
 	@Test
 	public void IV_gives_4() {
@@ -102,5 +107,20 @@ public class RomanNumeralConverterTest {
 	@Test(expected = InvalidNumeralException.class)
 	public void LM_is_invalid() {
 		romanNumeralConverter.convertToInteger("LM");
+	}
+	
+	@Test(expected = InvalidNumeralException.class) 
+	public void V_cannotBeRepeated() {
+		romanNumeralConverter.convertToInteger("VV");
+	}
+	
+	@Test
+	public void CCC_is_300() {
+		assertThat(romanNumeralConverter.convertToInteger("CCC"), is(300));
+	}
+
+	@Test(expected = InvalidNumeralException.class) 
+	public void CCCC_is_invalid() {
+		romanNumeralConverter.convertToInteger("CCCC");
 	}
 }
