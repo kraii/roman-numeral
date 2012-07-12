@@ -7,10 +7,16 @@ import com.google.common.collect.Lists;
 
 public class RomanNumeralConverter {
 
-	Numeral previousToken = Numeral.NULL;
-	int timeTokenRepeated = 1;
+	private String romanNumeral;
 
-	public int convertToInteger(String romanNumeral) {
+	private Numeral previousToken = Numeral.NULL;
+	private int timeTokenRepeated = 1;
+
+	public RomanNumeralConverter(String romanNumeral) {
+		this.romanNumeral = romanNumeral;
+	}
+
+	public int convertToInteger() {
 		int total = 0;
 		for (Character character : getCharactersReversed(romanNumeral)) {
 			Numeral currentToken = Numeral.parse(character);

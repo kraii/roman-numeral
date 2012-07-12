@@ -1,131 +1,128 @@
 package romannumeral;
 
-import org.junit.Before;
-import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+
+import org.junit.Test;
 
 public class RomanNumeralConverterTest {
-
-	private RomanNumeralConverter romanNumeralConverter;
-
-	@Before
-	public void beforeTest() {
-		romanNumeralConverter = new RomanNumeralConverter();
+	
+	private int convertNumeral(String numeral) {
+		return new RomanNumeralConverter(numeral).convertToInteger();
 	}
 
 	@Test
 	public void I_gives_1() {
-		assertThat(romanNumeralConverter.convertToInteger("I"), is(1));
+		assertThat(convertNumeral("I"), is(1));
 	}
 
 	@Test
 	public void II_gives_2() {
-		assertThat(romanNumeralConverter.convertToInteger("II"), is(2));
+		assertThat(convertNumeral("II"), is(2));
 	}
 
 	@Test
 	public void V_gives_5() {
-		assertThat(romanNumeralConverter.convertToInteger("V"), is(5));
+		assertThat(convertNumeral("V"), is(5));
 	}
 
 	@Test
 	public void X_gives_10() {
-		assertThat(romanNumeralConverter.convertToInteger("X"), is(10));
+		assertThat(convertNumeral("X"), is(10));
 	}
 
 	@Test
 	public void L_gives_50() {
-		assertThat(romanNumeralConverter.convertToInteger("L"), is(50));
+		assertThat(convertNumeral("L"), is(50));
 	}
 
 	@Test
 	public void C_gives_100() {
-		assertThat(romanNumeralConverter.convertToInteger("C"), is(100));
+		assertThat(convertNumeral("C"), is(100));
 	}
 
 	@Test
 	public void D_gives_500() {
-		assertThat(romanNumeralConverter.convertToInteger("D"), is(500));
+		assertThat(convertNumeral("D"), is(500));
 	}
 
 	@Test
 	public void M_gives_1000() {
-		assertThat(romanNumeralConverter.convertToInteger("M"), is(1000));
+		assertThat(convertNumeral("M"), is(1000));
 	}
 
 	@Test
 	public void MMM_gives_3000() {
-		assertThat(romanNumeralConverter.convertToInteger("MMM"), is(3000));
+		assertThat(convertNumeral("MMM"), is(3000));
 	}
 
 	@Test
 	public void IV_gives_4() {
-		assertThat(romanNumeralConverter.convertToInteger("IV"), is(4));
+		assertThat(convertNumeral("IV"), is(4));
 	}
 
 	@Test
 	public void IX_gives_9() {
-		assertThat(romanNumeralConverter.convertToInteger("IX"), is(9));
+		assertThat(convertNumeral("IX"), is(9));
 	}
 
 	@Test
 	public void MCMXCV_gives_1995() {
-		assertThat(romanNumeralConverter.convertToInteger("MCMXCV"), is(1995));
+		assertThat(convertNumeral("MCMXCV"), is(1995));
 	}
 
 	@Test
 	public void XXXIX_give_39() {
-		assertThat(romanNumeralConverter.convertToInteger("XXXIX"), is(39));
+		assertThat(convertNumeral("XXXIX"), is(39));
 	}
 
 	@Test(expected = InvalidNumeralException.class)
 	public void invalidNumeral_gives_exception() {
-		romanNumeralConverter.convertToInteger("Z");
+		convertNumeral("Z");
 	}
 
 	@Test(expected = InvalidNumeralException.class)
 	public void invalidNumeral_gives_exception_when_there_is_valid_numerals() {
-		romanNumeralConverter.convertToInteger("MCMXCVA");
+		convertNumeral("MCMXCVA");
 	}
 
 	@Test(expected = InvalidNumeralException.class)
 	public void IIII_is_invalid() {
-		romanNumeralConverter.convertToInteger("IIII");
+		convertNumeral("IIII");
 	}
 
 	@Test(expected = InvalidNumeralException.class)
 	public void IIIII_is_invalid() {
-		romanNumeralConverter.convertToInteger("IIIII");
+		convertNumeral("IIIII");
 	}
 
 	@Test(expected = InvalidNumeralException.class)
 	public void DD_is_invalid() {
-		romanNumeralConverter.convertToInteger("DD");
+		convertNumeral("DD");
 	}
 
 	@Test(expected = InvalidNumeralException.class)
 	public void LM_is_invalid() {
-		romanNumeralConverter.convertToInteger("LM");
+		convertNumeral("LM");
 	}
 
 	@Test(expected = InvalidNumeralException.class)
 	public void V_cannotBeRepeated() {
-		romanNumeralConverter.convertToInteger("VV");
+		convertNumeral("VV");
 	}
 
 	@Test
 	public void CCC_is_300() {
-		assertThat(romanNumeralConverter.convertToInteger("CCC"), is(300));
+		assertThat(convertNumeral("CCC"), is(300));
 	}
 
 	@Test(expected = InvalidNumeralException.class)
 	public void CCCC_is_invalid() {
-		romanNumeralConverter.convertToInteger("CCCC");
+		convertNumeral("CCCC");
 	}
 
 	@Test
 	public void XLIX_is_49() {
-		assertThat(romanNumeralConverter.convertToInteger("XLIX"), is(49));
+		assertThat(convertNumeral("XLIX"), is(49));
 	}
 }
